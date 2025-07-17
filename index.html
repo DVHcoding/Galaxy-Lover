@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Website Lovely - nơi chia sẻ tình yêu thương."
+    />
+    <title>Galaxy love 2.0</title>
+    <link
+      rel="icon"
+      href="https://github.com/Panbap/anh/blob/main/icon1.png?raw=true"
+      type="image/png"
+    />
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+          "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js",
+          "three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.152.2/examples/jsm/loaders/FontLoader.js",
+          "three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.152.2/examples/jsm/geometries/TextGeometry.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="container">
+      <button
+        id="toggle-audio"
+        class="text-white btn-audio-toggle"
+        style="position: absolute; top: 10px; right: 10px; z-index: 999"
+      >
+        <i id="audio-icon" class="fa-solid fa-volume-xmark"></i>
+      </button>
+
+      <div id="landscape-warning">
+        <div class="warning-content">
+          <div class="rotate-icon"></div>
+          <h1>Love</h1>
+          <h1>Tinh Cầu</h1>
+          <p style="font-size: 0.6em">Cậu hãy xoay ngang màn hình nha!</p>
+          <p style="font-size: 0.6em">
+            Nhớ chạm vào tinh cầu ở giữa để mở quà bí mật nha.
+          </p>
+          <div class="stars-bg"></div>
+        </div>
+      </div>
+
+      <div id="dark-overlay"></div>
+      <div id="info"></div>
+    </div>
+
+    <script type="module" src="./assets/galaxy.js"></script>
+    <script>
+      window.dataLove2Loveloom = {
+        template: "galaxy",
+        data: {
+          keychain: {
+            name: "Loveloom",
+            phone: "Loveloom",
+            address: "Loveloom",
+          },
+          ringTexts: ["Đỗ Hùng"],
+        },
+      };
+      const musicManager = {
+        audio: null,
+        isPlaying: false,
+        init() {
+          this.audio = new Audio("./assets/Ly.mp3");
+          this.audio.loop = true;
+          this.audio.volume = 0.7;
+          this.audio.preload = "auto";
+          this.audio.setAttribute("playsinline", "");
+          this.audio.onplay = () => {
+            this.isPlaying = true;
+            this.updateUI();
+          };
+          this.audio.onpause = () => {
+            this.isPlaying = false;
+            this.updateUI();
+          };
+          document.addEventListener(
+            "click",
+            () => {
+              if (!this.isPlaying) {
+                this.audio.play()["catch"]((_0x496b85) => {
+                  console.warn("Không thể phát nhạc:", _0x496b85);
+                });
+              }
+            },
+            {
+              once: true,
+            }
+          );
+          this.updateUI();
+        },
+        togglePlayback() {
+          if (!this.audio) {
+            return;
+          }
+          if (this.audio.paused) {
+            this.audio.play()["catch"]((_0x376602) => {
+              console.warn("Lỗi phát nhạc:", _0x376602);
+            });
+          } else {
+            this.audio.pause();
+          }
+        },
+        updateUI() {
+          const _0x4b7f0f = document.getElementById("audio-icon");
+          if (this.isPlaying) {
+            _0x4b7f0f.classList.remove("fa-volume-xmark");
+            _0x4b7f0f.classList.add("fa-volume-high");
+          } else {
+            _0x4b7f0f.classList.remove("fa-volume-high");
+            _0x4b7f0f.classList.add("fa-volume-xmark");
+          }
+        },
+      };
+      document.addEventListener("DOMContentLoaded", () => {
+        musicManager.init();
+        document
+          .getElementById("toggle-audio")
+          .addEventListener("click", () => {
+            musicManager.togglePlayback();
+          });
+      });
+    </script>
+  </body>
+</html>
